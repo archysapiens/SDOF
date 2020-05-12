@@ -1,0 +1,58 @@
+version: '3.3'
+services:
+  mysql:
+    container_name: mysql_container
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'SDOF'
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: 'desarrollo'
+      # You can use whatever password you like
+      MYSQL_PASSWORD: 'archysoft'
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: 'archysoft'
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '3306:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+      # Where our data will be persisted
+    volumes:
+      - /c/SDOF/mysql-db:/var/lib/mysql
+      
+  
+  postgres:
+    container_name: postgres_container
+    image: postgres
+    restart: always
+    environment:
+    - POSTGRES_DB=db
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=postgres
+    volumes:
+       - /c/SDOF/postgres-db:/data/postgres
+    ports:
+      - "5432:5432"
+    expose:
+      # Opens port 3306 on the container
+      - '5432'
+  adminer:
+    container_name: administrador_db
+    image: adminer    
+    ports:
+      - "7070:8080"
+  oracle:
+    container_name: oracle_container
+    image: store/oracle/database-enterprise:12.2.0.1
+    volumes:
+      - /c/SDOF/oracle-db:/opt/oracle/oradata
+    ports:
+      - 1531:1521
+      - 8088:8080
+      - 5508:5500      
+    
+volumes:
+    postgres:
+  
